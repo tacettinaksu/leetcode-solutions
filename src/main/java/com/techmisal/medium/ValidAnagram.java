@@ -1,6 +1,6 @@
 package com.techmisal.medium;
 
-import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * An anagram is a word or phrase formed by rearranging the letters of a different word or phrase,
@@ -16,23 +16,33 @@ import java.util.Arrays;
 public class ValidAnagram {
 
     public boolean isValidAnagram(String originalWord, String anagram) {
-        String removeSpacesOriginalWord = originalWord.replaceAll(" ", "");
-        String removeSpacesAnagram = anagram.replaceAll(" ", "");
+        String spacesRemovedOriginalWord = originalWord.replaceAll(" ", "");
+        String spacesRemovedAnagram = anagram.replaceAll(" ", "");
 
-        if (removeSpacesAnagram.length() != removeSpacesOriginalWord.length()) {
+        if (spacesRemovedAnagram.length() != spacesRemovedOriginalWord.length()) {
             return false;
         }
 
-        String sortedOriginalWord = sortString(removeSpacesOriginalWord.toLowerCase());
-        String sortedAnagram = sortString(removeSpacesAnagram.toLowerCase());
+        String lowerCaseOriginalWord = spacesRemovedOriginalWord.toLowerCase();
+        String lowerCaseAnagram = spacesRemovedAnagram.toLowerCase();
 
-        return sortedOriginalWord.equals(sortedAnagram);
+        HashMap<Character, Integer> letterCountsMap = new HashMap<>(lowerCaseAnagram.length());
+
+        for (int i = 0; i < lowerCaseOriginalWord.length(); i++) {
+            char originalWordCharKey = lowerCaseOriginalWord.charAt(i);
+            Integer originalWordIntValue = letterCountsMap.get(originalWordCharKey) == null ? 0 : letterCountsMap.get(originalWordCharKey);
+            letterCountsMap.put(originalWordCharKey, ++originalWordIntValue);
+
+            char anagramWordCharKey = lowerCaseAnagram.charAt(i);
+            Integer anagramIntValue = letterCountsMap.get(anagramWordCharKey) == null ? 0 : letterCountsMap.get(anagramWordCharKey);
+            letterCountsMap.put(anagramWordCharKey, --anagramIntValue);
+        }
+
+        return letterCountsMap.values().stream().mapToInt(Integer::intValue).sum() == 0;
     }
 
-    private String sortString(String inputString) {
-        char tempArray[] = inputString.toCharArray();
-        Arrays.sort(tempArray);
-        return new String(tempArray);
+    public static void main(String[] args) {
+        new ValidAnagram().isValidAnagram("1234", "1234");
     }
 
 }
