@@ -1,7 +1,5 @@
 package main
 
-var Version = ""
-
 /*
 https://leetcode.com/problems/two-sum/
 */
