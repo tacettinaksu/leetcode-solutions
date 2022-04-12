@@ -4,11 +4,6 @@ package main
 https://leetcode.com/problems/intersection-of-two-linked-lists/
 */
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
 func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	lengthA := 0
 	tempHeadA := headA
